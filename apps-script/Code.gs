@@ -10,7 +10,10 @@
  */
 
 const SHEET_ID = '1KJQaSfRU5DJ9jMU6A63zaP8kkfu6T5nVqsIzis4bLj0';
-const ss_ = () => SpreadsheetApp.openById(SHEET_ID);
+// Kalkylark och flikar öppnas en gång per anrop och återanvänds
+let ssCache_ = null;
+const sheetCache_ = {};
+const ss_ = () => ssCache_ || (ssCache_ = SpreadsheetApp.openById(SHEET_ID));
 
 const TABLES = {
   kalender: ['id', 'forberedelse', 'publicering', 'aktivitet', 'vinkel', 'status', 'ansvarig', 'kommentar'],
@@ -65,6 +68,7 @@ function doPost(e) {
 // ---------- Tabeller ----------
 
 function sheet_(name) {
+  if (sheetCache_[name]) return sheetCache_[name];
   const ss = ss_();
   let sh = ss.getSheetByName(name);
   const fields = TABLES[name];
@@ -82,6 +86,7 @@ function sheet_(name) {
     sh.getRange(1, start, sh.getMaxRows(), missing.length).setNumberFormat('@');
     sh.setFrozenRows(1);
   }
+  sheetCache_[name] = sh;
   return sh;
 }
 
@@ -96,10 +101,10 @@ function cell_(v) {
 
 function readTable_(name) {
   const sh = sheet_(name);
-  const last = sh.getLastRow();
-  if (last < 2) return [];
-  const head = headers_(sh);
-  const rows = sh.getRange(2, 1, last - 1, head.length).getValues();
+  const all = sh.getDataRange().getValues();   // en enda läsning per flik
+  if (all.length < 2) return [];
+  const head = all[0].map(String);
+  const rows = all.slice(1);
   // Rader som klistrats in direkt i kalkylarket utan id får ett, så att de kan redigeras från sidan
   const idCol = head.indexOf('id');
   let changed = false;

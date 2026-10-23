@@ -569,13 +569,20 @@ function toast(t) {
 
 // ---------- Server ----------
 
-async function api(payload) {
+async function api(payload, retried) {
   const res = await fetch(SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(Object.assign({}, payload, { password }))
   });
-  const d = await res.json();
+  const text = await res.text();
+  let d;
+  try { d = JSON.parse(text); }
+  catch (e) {
+    // Ibland svarar Google med skriptets GET-svar i stället för att köra anropet – då har inget sparats, försök igen
+    if (!retried && /^DUN PR-planering/.test(text)) return api(payload, true);
+    throw new Error('Oväntat svar från servern. Försök igen.');
+  }
   if (!d.ok) { const err = new Error(d.message || 'Något gick fel'); err.code = d.error; throw err; }
   data.kalender = d.kalender || [];
   data.medier = d.medier || [];
