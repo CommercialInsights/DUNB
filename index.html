@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Dun & Bradstreet – PR-planering</title>
+<style>
+  :root {
+    --bg: #f3f5f8; --card: #ffffff; --ink: #14202e; --muted: #5f6b7a; --line: #dde2e9;
+    --brand: #0d4459; --brand-ink: #ffffff; --brand-hover: #0a3546; --teal: #2a8696;
+    --accent: #1f7686; --accent-soft: #e2f1f3;
+    --angle: #fbf6e8; --angle-line: #e6d7a8; --danger: #b3261e;
+    --sugg: #fff6d6; --sugg-line: #ecd98f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  [hidden] { display: none !important; }
+
+  header { background: #fff; padding: 22px 16px 0; border-bottom: 4px solid var(--teal); }
+  .logo { height: 30px; display: block; }
+  header .wrap { padding: 0; }
+  .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.01em; color: var(--brand); }
+  .wordmark span { color: var(--ink); font-weight: 600; }
+  .headrow { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  h1 { margin: 0; font-size: 24px; letter-spacing: -0.01em; }
+  header p { margin: 2px 0 0; color: var(--muted); }
+  nav { display: flex; gap: 4px; margin-top: 16px; overflow-x: auto; }
+  nav button { border: none; border-radius: 8px 8px 0 0; background: transparent; padding: 10px 16px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  nav button.on { background: var(--brand); color: var(--brand-ink); }
+  .logout { font-size: 13px; padding: 6px 12px; }
+
+  button { font: inherit; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+  button:hover { border-color: #b4bdc9; }
+  button.primary { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); font-weight: 600; }
+  button.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+  button.danger { color: var(--danger); border-color: #e7c4c1; }
+  button.small { padding: 4px 10px; font-size: 13px; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 20px 0 8px; }
+  .toolbar .spacer { flex: 1; }
+  label.check { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; }
+  label.check input { width: auto; }
+  .state { font-size: 13px; color: var(--muted); }
+  .section { margin: 28px 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--accent); font-weight: 700; border-bottom: 2px solid var(--teal); padding-bottom: 4px; }
+
+  /* Kalender */
+  .item { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    display: grid; grid-template-columns: 170px 1fr; gap: 18px; padding: 16px 18px; margin-bottom: 10px; }
+  .item.past { opacity: .55; }
+  .item.struken h3 { text-decoration: line-through; }
+  .dates .pub { font-weight: 700; font-size: 16px; }
+  .dates .prep { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .dates .prep span { white-space: nowrap; }
+  .item h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; white-space: pre-wrap; }
+  .angle { background: var(--angle); border-left: 3px solid var(--angle-line); padding: 8px 12px; border-radius: 6px; font-size: 14px; margin: 8px 0; white-space: pre-wrap; }
+  .angle b { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #8a6d1d; display: block; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .meta .push { margin-left: auto; display: flex; gap: 6px; }
+  .note { white-space: pre-wrap; font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .chip { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #eee; color: #444; white-space: nowrap; }
+  .chip.Förslag { background: #eef0f7; color: #3c4a7a; }
+  .chip.Bekräftad { background: var(--accent-soft); color: var(--accent); }
+  .chip.Pågår { background: #fff1d6; color: #8a5a00; }
+  .chip.Klar { background: #dff3e4; color: #1d6b35; }
+  .chip.Struken { background: #f6e1df; color: var(--danger); }
+
+  /* Medier */
+  .legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+  .legend .prio { min-width: 36px; }
+  .mpick .prio { min-width: 26px !important; padding: 0 4px; }
+  .legend div { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 14px; display: flex; gap: 10px; align-items: center; }
+  .prio { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; padding: 0 8px; border-radius: 8px; font-weight: 800; font-size: 15px; flex-shrink: 0; }
+  .prio.T1 { background: var(--brand); color: var(--brand-ink); }
+  .prio.T2 { background: #d9eef1; color: #15606d; }
+  .prio.T3 { background: #e8eae7; color: #4d5550; }
+  .prio.X { background: #f1e8ff; color: #5b3a8f; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filters button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+  .media { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .media.has-sugg { border-color: var(--sugg-line); box-shadow: 0 0 0 2px var(--sugg); }
+  .mhead { display: flex; gap: 10px; align-items: flex-start; }
+  .mhead h3 { margin: 0; font-size: 16px; }
+  .mhead .sub { font-size: 13px; color: var(--muted); }
+  .mhead .pbox { margin-left: auto; text-align: right; flex-shrink: 0; }
+  button.link { border: none; background: none; color: var(--muted); padding: 4px 4px; font-size: 13px; text-decoration: underline; }
+  button.link:hover { color: var(--ink); }
+  .prio-full { font-size: 12px; color: var(--muted); text-align: right; }
+  details.mail summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 600; }
+  details.mail ul { margin: 6px 0 0; padding: 0; list-style: none; font-size: 13px; font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+  .sugg { background: var(--sugg); border: 1px solid var(--sugg-line); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
+  .sugg .row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .mfoot { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: auto; padding-top: 4px; }
+
+  .empty { text-align: center; color: var(--muted); padding: 40px; }
+
+  /* Ärenden */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+  .stat { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+  .stat b { display: block; font-size: 22px; line-height: 1.2; }
+  .stat span { font-size: 13px; color: var(--muted); }
+  .stat.warn b { color: var(--danger); }
+  .search { width: 220px; }
+  .tasks { display: flex; flex-direction: column; gap: 8px; }
+  .task { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+    display: grid; grid-template-columns: 26px 1fr auto; gap: 12px; align-items: start; }
+  .task.done { opacity: .6; }
+  .task.overdue { border-color: #e7c4c1; box-shadow: 0 0 0 2px #fbeceb; }
+  .task.published { border-color: var(--brand); box-shadow: 0 0 0 2px var(--accent-soft); }
+  .tick { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #b4bdc9; background: #fff; padding: 0; margin-top: 2px; display: grid; place-items: center; font-size: 14px; line-height: 1; color: #fff; }
+  .tick.on { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+  .task h4 { margin: 0; font-size: 15px; }
+  .task h4 .med { color: var(--accent); }
+  .task .line { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .task .next { font-size: 14px; margin-top: 6px; }
+  .task .next.late { color: var(--danger); font-weight: 600; }
+  .task .pub { font-size: 14px; margin-top: 6px; background: var(--accent-soft); border-radius: 6px; padding: 6px 10px; }
+  .task .pub a { color: var(--accent); font-weight: 600; word-break: break-all; }
+  .task .side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .task select.st { width: auto; padding: 4px 8px; font-size: 13px; }
+  .mstats { font-size: 13px; color: var(--muted); }
+  .mstats b { color: var(--ink); }
+  .mpick { max-height: 240px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+  .mpick .g { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 700; margin: 8px 0 4px; }
+  .field .mpick label { display: flex; gap: 8px; align-items: center; font-weight: 400; font-size: 14px; margin: 3px 0; cursor: pointer; }
+  .mpick input { width: auto; }
+  fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px 2px; margin: 0 0 12px; }
+  legend { font-size: 13px; font-weight: 700; padding: 0 6px; color: var(--accent); }
+  .notice { background: var(--sugg); border: 1px solid var(--sugg-line); padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-top: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .notice .spacer { flex: 1; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 14px; z-index: 50; }
+
+  /* Klipp */
+  .kgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 18px; align-items: start; margin-top: 8px; }
+  .klist { display: flex; flex-direction: column; gap: 8px; }
+  .kgroup { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 700; margin: 14px 0 2px; }
+  .kgroup:first-child { margin-top: 0; }
+  .klipp { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: start; }
+  .klipp.off { opacity: .5; }
+  .klipp input[type=checkbox] { width: 18px; height: 18px; margin: 3px 0 0; }
+  .klipp .kmed { font-weight: 700; color: var(--accent); }
+  .klipp .krub { font-size: 15px; font-weight: 600; margin-top: 2px; }
+  .klipp .krub a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .klipp .krub a:hover { border-color: var(--ink); }
+  .klipp .kline { font-size: 13px; color: var(--muted); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+  .draft { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; position: sticky; top: 12px; }
+  .draft h3 { margin: 0 0 10px; font-size: 16px; }
+  .draft .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .draft .row > * { flex: 1; min-width: 120px; }
+  .draft .hint { font-size: 12px; color: var(--muted); margin-top: -6px; margin-bottom: 10px; }
+  .preview { border: 1px solid var(--line); border-radius: 8px; background: #fafbfc; padding: 12px 14px; font-size: 14px; max-height: 420px; overflow: auto; }
+  .preview .subj { font-weight: 700; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .preview p { margin: 0 0 10px; white-space: pre-wrap; }
+  .preview h4 { margin: 12px 0 4px; font-size: 13px; }
+  .preview ul { margin: 0 0 10px; padding-left: 18px; }
+  .preview li { margin-bottom: 6px; }
+  .preview li a { color: var(--accent); word-break: break-word; }
+  .preview li .c { color: var(--muted); font-size: 13px; }
+  .draft .actions { flex-wrap: wrap; }
+
+  /* Login */
+  .login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+  .login form { background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--teal); border-radius: 14px; padding: 28px; width: min(380px, 100%); }
+  .login .logo { height: 28px; margin-bottom: 18px; }
+  .login h2 { margin: 0 0 4px; font-size: 20px; }
+  .login p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+  .login .err { color: var(--danger); font-size: 14px; min-height: 20px; margin-top: 8px; }
+  .login button { width: 100%; margin-top: 10px; }
+
+  dialog { border: none; border-radius: 14px; padding: 0; width: min(640px, calc(100vw - 32px)); }
+  dialog::backdrop { background: rgba(15, 25, 40, .45); }
+  dialog form { padding: 22px; }
+  dialog h2 { margin: 0 0 14px; font-size: 19px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .field small { color: var(--muted); font-weight: 400; }
+  input, textarea, select { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+  textarea { resize: vertical; min-height: 70px; }
+  .actions { display: flex; gap: 10px; margin-top: 8px; }
+  .actions .spacer { flex: 1; }
+  .choices { display: flex; gap: 8px; flex-wrap: wrap; }
+  .choices label { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: 400; font-size: 14px; margin: 0; }
+  .choices input { width: auto; }
+
+  @media (max-width: 860px) {
+    .kgrid { grid-template-columns: 1fr; }
+    .draft { position: static; }
+  }
+  @media (max-width: 680px) {
+    .item { grid-template-columns: 1fr; gap: 8px; }
+    .grid2, .legend { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .task { grid-template-columns: 26px 1fr; }
+    .task .side { grid-column: 2; align-items: flex-start; flex-direction: row; }
+    .search { width: 100%; }
+    .klipp { grid-template-columns: 22px 1fr; }
+    .klipp .kedit { grid-column: 2; }
+  }
+  @media print {
+    nav, .toolbar, .meta .push, .mfoot, .notice, .logout, .draft, .klipp input { display: none !important; }
+    .kgrid { grid-template-columns: 1fr; }
+    .item, .media, .klipp { break-inside: avoid; opacity: 1 !important; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Inloggning -->
+<div class="login" id="loginView">
+  <form id="loginForm">
+    <img class="logo" src="data:image/png;base64,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" alt="Dun &amp; Bradstreet">
+    <h2>PR-planering</h2>
+    <p>Redaktionell kalender, medier, ärenden och klipp. Ange lösenord för att fortsätta.</p>
+    <input type="password" id="pwInput" placeholder="Lösenord" autocomplete="current-password" required>
+    <button class="primary" type="submit" id="loginBtn">Logga in</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<!-- App -->
+<div id="appView" hidden>
+  <header>
+    <div class="wrap">
+      <img class="logo" src="data:image/png;base64,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" alt="Dun &amp; Bradstreet">
+      <div class="headrow">
+        <div>
+          <h1 id="pageTitle">Redaktionell kalender</h1>
+          <p id="pageSub"></p>
+        </div>
+        <button class="logout" id="logoutBtn">Logga ut</button>
+      </div>
+      <nav>
+        <button data-view="kalender" class="on">Kalender</button>
+        <button data-view="medier">Medier</button>
+        <button data-view="arenden">Ärenden</button>
+        <button data-view="klipp">Klipp</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Kalender -->
+    <section id="kalenderView">
+      <div class="toolbar">
+        <button class="primary" id="addEvent">+ Ny aktivitet</button>
+        <label class="check"><input type="checkbox" id="showPast" checked> Visa passerade</label>
+        <div class="spacer"></div>
+        <span class="state"></span>
+        <button class="reload">Uppdatera</button>
+        <button class="print">Skriv ut</button>
+      </div>
+      <div id="eventList"></div>
+    </section>
+
+    <!-- Medier -->
+    <section id="medierView" hidden>
+      <div class="legend">
+        <div><span class="prio T1">T1</span> Prioriterade medier – stora rikstäckande, löpande relation och aktiv pitch</div>
+        <div><span class="prio T2">T2</span> Branschmedier – riktade utspel när ämnet passar</div>
+        <div><span class="prio T3">T3</span> Övriga medier – regionalt, magasin, poddar</div>
+      </div>
+      <div class="toolbar">
+        <div class="filters" id="mFilters">
+          <button data-f="alla" class="on">Alla</button>
+          <button data-f="T1">T1</button>
+          <button data-f="T2">T2</button>
+          <button data-f="T3">T3</button>
+          <button data-f="sugg">Med förslag</button>
+        </div>
+        <div class="spacer"></div>
+        <span class="state"></span>
+        <button id="copyMenuA" title="Medier i T1">Kopiera e-post T1</button>
+        <button id="copyMenuAB" title="Medier i T1 och T2">T1 + T2</button>
+        <button class="primary" id="addMedia">+ Nytt medium</button>
+      </div>
+      <div id="mediaList"></div>
+    </section>
+
+    <!-- Ärenden -->
+    <section id="arendenView" hidden>
+      <div class="stats" id="aStats"></div>
+      <div class="toolbar">
+        <button class="primary" id="addArende">+ Nytt ärende</button>
+        <div class="filters" id="aFilters">
+          <button data-f="oppna" class="on">Öppna</button>
+          <button data-f="mina">Mina</button>
+          <button data-f="publ">Publicerade</button>
+          <button data-f="alla">Alla</button>
+        </div>
+        <input type="search" id="aSearch" class="search" placeholder="Sök medium, ämne …">
+        <div class="spacer"></div>
+        <span class="state"></span>
+        <button class="reload">Uppdatera</button>
+      </div>
+      <div id="arendeList"></div>
+    </section>
+
+    <!-- Klipp -->
+    <section id="klippView" hidden>
+      <div class="stats" id="kStats"></div>
+      <div id="kImport"></div>
+      <div class="toolbar">
+        <button class="primary" id="addKlipp">+ Nytt klipp</button>
+        <label class="check">Från <input type="date" id="kFrom" style="width:auto"></label>
+        <label class="check">Till <input type="date" id="kTo" style="width:auto"></label>
+        <select id="kAmne" style="width:auto"><option value="">Alla utspel</option></select>
+        <input type="search" id="kSearch" class="search" placeholder="Sök medium, rubrik …">
+        <div class="spacer"></div>
+        <span class="state"></span>
+        <button class="reload">Uppdatera</button>
+      </div>
+      <div class="kgrid">
+        <div>
+          <div class="toolbar" style="margin:0 0 8px">
+            <button class="small" id="kAll">Markera alla</button>
+            <button class="small" id="kNone">Avmarkera alla</button>
+            <span class="state" id="kSel"></span>
+          </div>
+          <div class="klist" id="klippList"></div>
+        </div>
+        <aside class="draft">
+          <h3>Mejlutkast</h3>
+          <div class="row">
+            <div class="field"><label>Språk</label>
+              <select id="dLang"><option value="sv">Svenska</option><option value="en">English</option></select></div>
+            <div class="field"><label>Gruppera</label>
+              <select id="dGroup"><option value="amne">Per utspel</option><option value="medium">Per medium</option><option value="datum">Kronologiskt</option></select></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Hälsning till</label><input id="dTo" placeholder="t.ex. alla, Manuela"></div>
+            <div class="field"><label>Avsändare</label><input id="dFrom" placeholder="Ditt namn"></div>
+          </div>
+          <div class="field"><label>Inledning</label><textarea id="dIntro" rows="4"></textarea></div>
+          <div class="hint">{antal}, {medier} och {period} fylls i automatiskt.</div>
+          <div class="field"><label>Avslutning</label><textarea id="dOutro" rows="2"></textarea></div>
+          <div class="field"><label>Visa per klipp</label>
+            <div class="choices">
+              <label><input type="checkbox" id="dShowTyp" checked> Typ</label>
+              <label><input type="checkbox" id="dShowTal" checked> Talesperson</label>
+              <label><input type="checkbox" id="dShowKom" checked> Kommentar</label>
+            </div>
+          </div>
+          <div class="preview" id="dPreview"></div>
+          <div class="actions">
+            <button class="primary" id="dCopyRich" title="Klistras in med klickbara länkar i Outlook och Gmail">Kopiera mejl</button>
+            <button id="dCopyPlain">Kopiera som ren text</button>
+            <button id="dMailto">Öppna i e-post</button>
+            <button class="link" id="dReset">Återställ texter</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Dialog: ärende -->
+<dialog id="arendeDlg">
+  <form id="arendeForm">
+    <h2 id="arendeTitle">Nytt ärende</h2>
+    <input type="hidden" name="id">
+    <div class="field" id="mpickField"><label>Medier <small>(ett ärende skapas per medium)</small></label>
+      <div class="mpick" id="mpick"></div></div>
+    <div class="field" id="mOneField" hidden><label>Medium</label><select name="medium" id="mOne"></select></div>
+    <div class="grid2">
+      <div class="field"><label>Datum</label><input type="date" name="datum" required></div>
+      <div class="field"><label>Kanal</label>
+        <select name="kanal"><option>Mejl</option><option>Telefon</option><option>Möte</option><option>LinkedIn</option><option>Pressmeddelande</option><option>Annat</option></select></div>
+    </div>
+    <div class="field"><label>Ämne / utspel</label><input name="amne" list="amneList" placeholder="T.ex. EU:s sanktionslistning" required>
+      <datalist id="amneList"></datalist></div>
+    <div class="grid2">
+      <div class="field"><label>Ansvarig</label><input name="ansvarig" required></div>
+      <div class="field"><label>Status</label>
+        <select name="status"><option>Att göra</option><option>Kontaktad</option><option>Intresse</option><option>Publicerad</option><option>Nej tack</option><option>Avslutad</option></select></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Nästa steg</label><input name="nastaSteg" placeholder="T.ex. Ringa upp"></div>
+      <div class="field"><label>Senast</label><input type="date" name="nastaDatum"></div>
+    </div>
+    <div class="field"><label>Kommentar</label><textarea name="kommentar" rows="2" placeholder="Vad sades, vem var kontakten …"></textarea></div>
+    <fieldset>
+      <legend>Publicering</legend>
+      <div class="grid2">
+        <div class="field"><label>Publiceringsdatum</label><input type="date" name="pubDatum"></div>
+        <div class="field"><label>Typ</label>
+          <select name="pubTyp"><option value=""></option><option>Nyhet</option><option>Intervju</option><option>Krönika/debatt</option><option>Omnämnande</option><option>Poddavsnitt</option><option>TV/radio</option><option>Annat</option></select></div>
+      </div>
+      <div class="field"><label>Rubrik</label><input name="pubRubrik"></div>
+      <div class="field"><label>Länk</label><input type="text" inputmode="url" name="pubLank" placeholder="https://…"></div>
+    </fieldset>
+    <div class="actions">
+      <button type="button" class="danger" id="arendeDel">Ta bort</button>
+      <div class="spacer"></div>
+      <button type="button" data-close>Avbryt</button>
+      <button type="submit" class="primary">Spara</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Dialog: kalenderaktivitet -->
+<dialog id="eventDlg">
+  <form id="eventForm">
+    <h2 id="eventTitle">Redigera aktivitet</h2>
+    <input type="hidden" name="id">
+    <div class="grid2">
+      <div class="field"><label>Publicering / aktivitet <small>(börja med ÅÅÅÅ-MM-DD)</small></label>
+        <input name="publicering" placeholder="2026-11-24 (tis)" required></div>
+      <div class="field"><label>Förberedelse startar</label>
+        <input name="forberedelse" placeholder="2026-11-09"></div>
+    </div>
+    <div class="field"><label>Aktivitet</label><textarea name="aktivitet" rows="4" required></textarea></div>
+    <div class="field"><label>Vinkel</label><textarea name="vinkel" rows="3"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label>Status</label>
+        <select name="status"><option>Förslag</option><option>Bekräftad</option><option>Pågår</option><option>Klar</option><option>Struken</option></select></div>
+      <div class="field"><label>Ansvarig</label><input name="ansvarig" placeholder="Namn"></div>
+    </div>
+    <div class="field"><label>Kommentar</label><textarea name="kommentar" rows="3" placeholder="Frågor, beslut, länkar …"></textarea></div>
+    <div class="actions">
+      <button type="button" class="danger" id="eventDel">Ta bort</button>
+      <div class="spacer"></div>
+      <button type="button" data-close>Avbryt</button>
+      <button type="submit" class="primary">Spara</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Dialog: föreslå kategori -->
+<dialog id="suggDlg">
+  <form id="suggForm">
+    <h2>Föreslå nivå</h2>
+    <p id="suggFor" style="margin:-8px 0 14px;color:var(--muted)"></p>
+    <input type="hidden" name="id">
+    <div class="field"><label>Ny nivå</label>
+      <div class="choices">
+        <label><input type="radio" name="forslag" value="T1" required> T1</label>
+        <label><input type="radio" name="forslag" value="T2"> T2</label>
+        <label><input type="radio" name="forslag" value="T3"> T3</label>
+        <label><input type="radio" name="forslag" value="Ta bort"> Ta bort ur listan</label>
+      </div>
+    </div>
+    <div class="field"><label>Motivering <small>(valfritt)</small></label>
+      <textarea name="forslagKommentar" rows="3" placeholder="Varför ska mediet flyttas?"></textarea></div>
+    <div class="field"><label>Ditt namn</label><input name="foreslagenAv" required></div>
+    <div class="actions">
+      <div class="spacer"></div>
+      <button type="button" data-close>Avbryt</button>
+      <button type="submit" class="primary">Skicka förslag</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Dialog: medium -->
+<dialog id="mediaDlg">
+  <form id="mediaForm">
+    <h2 id="mediaTitle">Redigera medium</h2>
+    <input type="hidden" name="id">
+    <div class="grid2">
+      <div class="field"><label>Medium</label><input name="medium" required></div>
+      <div class="field"><label>Nivå</label><input name="prio" list="prioList" placeholder="T1, T2 eller T3" required></div>
+    </div>
+    <datalist id="prioList"><option value="T1"><option value="T2"><option value="T3"><option value="T1 (vid stora nyheter)"></datalist>
+    <div class="field"><label>Grupp</label><input name="grupp" list="groupList" required></div>
+    <datalist id="groupList"></datalist>
+    <div class="grid2">
+      <div class="field"><label>Format</label><input name="format"></div>
+      <div class="field"><label>Läsare / fokus</label><input name="fokus"></div>
+    </div>
+    <div class="field"><label>E-post <small>(en adress per rad)</small></label><textarea name="epost" rows="5"></textarea></div>
+    <div class="actions">
+      <button type="button" class="danger" id="mediaDel">Ta bort</button>
+      <div class="spacer"></div>
+      <button type="button" data-close>Avbryt</button>
+      <button type="submit" class="primary">Spara</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Dialog: klipp -->
+<dialog id="klippDlg">
+  <form id="klippForm">
+    <h2 id="klippTitle">Nytt klipp</h2>
+    <input type="hidden" name="id">
+    <input type="hidden" name="arende">
+    <div class="grid2">
+      <div class="field"><label>Publiceringsdatum</label><input type="date" name="datum" required></div>
+      <div class="field"><label>Medium</label><input name="medium" list="kMediaList" required>
+        <datalist id="kMediaList"></datalist></div>
+    </div>
+    <div class="field"><label>Rubrik</label><input name="rubrik" required></div>
+    <div class="field"><label>Länk</label><input type="text" inputmode="url" name="lank" placeholder="https://…"></div>
+    <div class="grid2">
+      <div class="field"><label>Typ</label>
+        <select name="typ"><option value=""></option><option>Nyhet</option><option>Intervju</option><option>Krönika/debatt</option><option>Omnämnande</option><option>Poddavsnitt</option><option>TV/radio</option><option>Annat</option></select></div>
+      <div class="field"><label>Utspel / ämne</label><input name="amne" list="amneList2" placeholder="T.ex. EU:s sanktionslistning">
+        <datalist id="amneList2"></datalist></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Talesperson</label><input name="talesperson" list="talList" placeholder="Vem citeras?">
+        <datalist id="talList"></datalist></div>
+      <div class="field"><label>Räckvidd <small>(valfritt)</small></label><input name="rackvidd" placeholder="T.ex. 120 000 läsare"></div>
+    </div>
+    <div class="field"><label>Kommentar <small>(syns i mejlet om du vill)</small></label>
+      <textarea name="kommentar" rows="3" placeholder="Kort sammanfattning eller ett citat"></textarea></div>
+    <div class="actions">
+      <button type="button" class="danger" id="klippDel">Ta bort</button>
+      <div class="spacer"></div>
+      <button type="button" data-close>Avbryt</button>
+      <button type="submit" class="primary">Spara</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+// Klistra in Apps Script-webbappens adress här:
+const SCRIPT_URL = '';
+
+const MONTHS = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const EVENT_FIELDS = ['id','forberedelse','publicering','aktivitet','vinkel','status','ansvarig','kommentar'];
+const MEDIA_FIELDS = ['id','grupp','medium','format','fokus','prio','epost','forslag','forslagKommentar','foreslagenAv'];
+const ARENDE_FIELDS = ['id','datum','medium','kanal','amne','ansvarig','status','nastaSteg','nastaDatum','kommentar','pubDatum','pubTyp','pubRubrik','pubLank'];
+const KLIPP_FIELDS = ['id','datum','medium','rubrik','lank','typ','amne','talesperson','rackvidd','kommentar','arende'];
+const CLOSED = ['Publicerad','Nej tack','Avslutad'];
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+let password = '';
+let data = { kalender: [], medier: [], arenden: [], klipp: [] };
+let aFilter = 'oppna';
+let mFilter = 'alla';
+let kUnchecked = new Set();   // klipp som användaren avmarkerat för mejlet
+
+const store = {
+  get(k) { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } },
+  set(k, v) { try { v ? sessionStorage.setItem(k, v) : sessionStorage.removeItem(k); } catch (e) {} },
+  getLocal(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } },
+  setLocal(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isoOf = s => { const m = String(s || '').match(/\d{4}-\d{2}-\d{2}/); return m ? m[0] : ''; };
+const sortKey = it => isoOf(it.publicering) || isoOf(it.forberedelse) || '9999-12-31';
+const todayIso = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
+// Nivå T1–T3. Gamla värden A/B/C räknas om till T1/T2/T3.
+const letterOf = p => {
+  const s = String(p || '').trim().toUpperCase();
+  let m = s.match(/^T\s*([123])/); if (m) return 'T' + m[1];
+  m = s.match(/^[ABC]/); return m ? 'T' + ' ABC'.indexOf(m[0]) : 'X';
+};
+const prioNote = p => String(p || '').trim().replace(/^(T\s*[123]|[ABC])\b\s*/i, '');
+const emailsOf = m => String(m.epost || '').split(/[\s,;]+/).map(s => s.trim()).filter(s => s.includes('@'));
+const isUrl = s => /^https?:\/\//i.test(String(s || ''));
+const fixUrl = s => { s = String(s || '').trim(); return s && !isUrl(s) ? 'https://' + s : s; };
+
+function setState(t) { $$('.state:not(#kSel)').forEach(el => el.textContent = t); }
+function toast(t) {
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = t;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2400);
+}
+
+// ---------- Server ----------
+
+async function api(payload) {
+  const res = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({}, payload, { password }))
+  });
+  const d = await res.json();
+  if (!d.ok) { const err = new Error(d.message || 'Något gick fel'); err.code = d.error; throw err; }
+  data.kalender = d.kalender || [];
+  data.medier = d.medier || [];
+  data.arenden = d.arenden || [];
+  data.klipp = d.klipp || [];
+  renderAll();
+  return d;
+}
+
+async function run(payload, okText) {
+  setState('Sparar…');
+  try {
+    await api(payload);
+    setState('Sparat ' + new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }));
+    if (okText) toast(okText);
+  } catch (e) {
+    if (e.code === 'auth') return logout('Logga in igen.');
+    setState('Kunde inte spara');
+    alert('Det gick inte att spara: ' + e.message);
+  }
+}
+
+async function refresh() {
+  setState('Laddar…');
+  try { await api({ action: 'list' }); setState('Uppdaterad ' + new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })); }
+  catch (e) { if (e.code === 'auth') return logout('Logga in igen.'); setState('Kunde inte ladda: ' + e.message); }
+}
+
+// ---------- Inloggning ----------
+
+async function login(pw, silent) {
+  if (!SCRIPT_URL) { $('#loginErr').textContent = 'SCRIPT_URL saknas i index.html.'; return; }
+  password = pw;
+  $('#loginBtn').disabled = true; $('#loginBtn').textContent = 'Loggar in…';
+  try {
+    await api({ action: 'list' });
+    store.set('dnb_pw', pw);
+    $('#loginView').hidden = true; $('#appView').hidden = false;
+    setState('Uppdaterad ' + new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }));
+    showView(['#medier','#arenden','#klipp'].includes(location.hash) ? location.hash.slice(1) : 'kalender');
+  } catch (e) {
+    password = ''; store.set('dnb_pw', '');
+    if (!silent) $('#loginErr').textContent = e.message;
+  } finally {
+    $('#loginBtn').disabled = false; $('#loginBtn').textContent = 'Logga in';
+  }
+}
+
+function logout(msg) {
+  password = ''; store.set('dnb_pw', '');
+  data = { kalender: [], medier: [], arenden: [], klipp: [] };
+  ['#eventList','#mediaList','#arendeList','#aStats','#klippList','#kStats','#kImport','#dPreview'].forEach(s => $(s).innerHTML = '');
+  $$('dialog').forEach(d => d.open && d.close());
+  $('#appView').hidden = true; $('#loginView').hidden = false;
+  $('#pwInput').value = ''; $('#loginErr').textContent = msg || '';
+  $('#pwInput').focus();
+}
+
+// ---------- Vyer ----------
+
+function showView(v) {
+  $$('nav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  ['kalender','medier','arenden','klipp'].forEach(x => $('#' + x + 'View').hidden = v !== x);
+  const T = { kalender: ['Redaktionell kalender', 'Planerade utspel och aktiviteter'],
+    medier: ['Mediekartläggning', 'Målmedier i nivå T1, T2 och T3 – föreslå ändringar direkt i listan'],
+    arenden: ['Ärenden', 'Vilka medier vi bearbetat, med vad och när – och vad det gav'],
+    klipp: ['Klipp', 'Publiceringar vi fått – och ett färdigt mejl för att berätta om dem'] }[v];
+  $('#pageTitle').textContent = T[0];
+  $('#pageSub').textContent = T[1];
+  history.replaceState(null, '', '#' + v);
+}
+
+function renderAll() { renderEvents(); renderMedia(); renderArenden(); renderKlipp(); }
+
+function renderEvents() {
+  const showPast = $('#showPast').checked;
+  const today = todayIso();
+  const list = data.kalender.slice().sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+  let html = '', lastMonth = '';
+  list.forEach(it => {
+    const key = sortKey(it);
+    const past = key !== '9999-12-31' && key < today;
+    if (past && !showPast) return;
+    const month = key === '9999-12-31' ? 'Utan datum' : MONTHS[+key.slice(5, 7) - 1] + ' ' + key.slice(0, 4);
+    if (month !== lastMonth) { html += `<div class="section">${month}</div>`; lastMonth = month; }
+    const status = it.status || 'Förslag';
+    html += `<article class="item ${past ? 'past' : ''} ${status === 'Struken' ? 'struken' : ''}">
+      <div class="dates">
+        <div class="pub">${esc(it.publicering) || '–'}</div>
+        ${it.forberedelse && it.forberedelse !== '–' ? `<div class="prep">Förberedelse från <span>${esc(it.forberedelse)}</span></div>` : ''}
+      </div>
+      <div>
+        <h3>${esc(it.aktivitet)}</h3>
+        ${it.vinkel ? `<div class="angle"><b>Vinkel</b>${esc(it.vinkel)}</div>` : ''}
+        ${it.kommentar ? `<div class="note">💬 ${esc(it.kommentar)}</div>` : ''}
+        <div class="meta">
+          <span class="chip ${esc(status)}">${esc(status)}</span>
+          ${it.ansvarig ? `<span>Ansvarig: ${esc(it.ansvarig)}</span>` : ''}
+          <span class="push"><button class="small" data-edit-event="${esc(it.id)}">Redigera</button></span>
+        </div>
+      </div>
+    </article>`;
+  });
+  $('#eventList').innerHTML = html || '<div class="empty">Inga aktiviteter att visa.</div>';
+}
+
+function renderMedia() {
+  const groups = [];
+  data.medier.forEach(m => { if (m.grupp && !groups.includes(m.grupp)) groups.push(m.grupp); });
+  $('#groupList').innerHTML = groups.map(g => `<option value="${esc(g)}">`).join('');
+  const nSugg = data.medier.filter(m => m.forslag).length;
+  const suggBtn = $('#mFilters [data-f="sugg"]');
+  suggBtn.textContent = nSugg ? `Med förslag (${nSugg})` : 'Med förslag';
+
+  const pass = m => mFilter === 'alla' || (mFilter === 'sugg' ? !!m.forslag : letterOf(m.prio) === mFilter);
+  const byPrio = (a, b) => letterOf(a.prio).localeCompare(letterOf(b.prio)) || String(a.medium).localeCompare(String(b.medium), 'sv');
+
+  let html = '';
+  const allGroups = groups.concat(data.medier.some(m => !m.grupp) ? [''] : []);
+  allGroups.forEach(g => {
+    const list = data.medier.filter(m => (m.grupp || '') === g && pass(m)).sort(byPrio);
+    if (!list.length) return;
+    html += `<div class="section">${esc(g || 'Övriga')}</div><div class="mgrid">`;
+    list.forEach(m => {
+      const L = letterOf(m.prio);
+      const mails = emailsOf(m);
+      const a = data.arenden.filter(x => x.medium === m.id);
+      const nKlipp = data.klipp.filter(k => k.medium === m.medium).length;
+      const last = a.map(x => x.datum).sort().pop();
+      html += `<article class="media ${m.forslag ? 'has-sugg' : ''}">
+        <div class="mhead">
+          <div>
+            <h3>${esc(m.medium)}</h3>
+            <div class="sub">${[m.format, m.fokus].filter(Boolean).map(esc).join(' · ')}</div>
+          </div>
+          <div class="pbox">
+            <span class="prio ${L}" title="${esc(m.prio)}">${L === 'X' ? '?' : L}</span>
+            ${prioNote(m.prio) ? `<div class="prio-full">${esc(prioNote(m.prio))}</div>` : ''}
+          </div>
+        </div>
+        ${a.length || nKlipp ? `<div class="mstats"><b>${a.length}</b> ärende${a.length === 1 ? '' : 'n'} · <b>${nKlipp}</b> klipp${last ? ' · senast kontakt ' + esc(last) : ''}</div>` : ''}
+        ${mails.length ? `<details class="mail"><summary>${mails.length} e-postadress${mails.length > 1 ? 'er' : ''}</summary><ul>${mails.map(e => `<li>${esc(e)}</li>`).join('')}</ul></details>` : ''}
+        ${m.forslag ? `<div class="sugg">
+            <b>${esc(m.foreslagenAv || 'Någon')}</b> föreslår: <b>${m.forslag === 'Ta bort' ? 'ta bort ur listan' : 'nivå ' + esc(m.forslag)}</b>
+            ${m.forslagKommentar ? `<div class="note" style="margin-top:4px">${esc(m.forslagKommentar)}</div>` : ''}
+            <div class="row">
+              <button class="small primary" data-accept="${esc(m.id)}">Godkänn</button>
+              <button class="small" data-reject="${esc(m.id)}">Avvisa</button>
+            </div>
+          </div>` : ''}
+        <div class="mfoot">
+          <button class="small" data-new-arende="${esc(m.id)}">+ Ärende</button>
+          <button class="small" data-new-klipp="${esc(m.id)}">+ Klipp</button>
+          <button class="small" data-suggest="${esc(m.id)}">Föreslå nivå</button>
+          ${mails.length ? `<button class="small" data-copy="${esc(m.id)}">Kopiera e-post</button>` : ''}
+          <button class="link" data-edit-media="${esc(m.id)}" style="margin-left:auto">Redigera</button>
+        </div>
+      </article>`;
+    });
+    html += '</div>';
+  });
+  $('#mediaList').innerHTML = html || `<div class="empty">Inga medier att visa.${data.medier.length ? '' : '<br><br><button class="primary" onclick="openMedia(null)">+ Lägg till första mediet</button>'}</div>`;
+}
+
+// ---------- Kopiering ----------
+
+async function copyText(text, label) {
+  try { await navigator.clipboard.writeText(text); toast(label); }
+  catch (e) { prompt('Kopiera texten:', text); }
+}
+function copyLevels(levels) {
+  const list = data.medier.filter(m => levels.includes(letterOf(m.prio)));
+  const mails = Array.from(new Set(list.flatMap(emailsOf)));
+  if (!mails.length) return toast('Inga adresser att kopiera');
+  copyText(mails.join(', '), `${mails.length} adresser kopierade – klistra in som bcc`);
+}
+
+// ---------- Formulär ----------
+
+function fill(form, fields, obj) { fields.forEach(k => { if (form.elements[k] && form.elements[k].type !== 'radio') form.elements[k].value = (obj && obj[k]) || ''; }); }
+function read(form, fields) { const o = {}; fields.forEach(k => { if (form.elements[k]) o[k] = String(form.elements[k].value || '').trim(); }); return o; }
+const findMedia = id => data.medier.find(m => m.id === id);
+
+function openEvent(it) {
+  const f = $('#eventForm');
+  fill(f, EVENT_FIELDS, it || { status: 'Förslag' });
+  if (!it) f.elements.status.value = 'Förslag';
+  $('#eventTitle').textContent = it ? 'Redigera aktivitet' : 'Ny aktivitet';
+  $('#eventDel').hidden = !it;
+  $('#eventDlg').showModal();
+}
+
+function openMedia(m) {
+  const f = $('#mediaForm');
+  fill(f, MEDIA_FIELDS, m);
+  if (m) f.elements.epost.value = emailsOf(m).join('\n');
+  $('#mediaTitle').textContent = m ? 'Redigera medium' : 'Nytt medium';
+  $('#mediaDel').hidden = !m;
+  $('#mediaDlg').showModal();
+}
+
+function openSuggest(m) {
+  const f = $('#suggForm');
+  f.reset();
+  f.elements.id.value = m.id;
+  f.elements.foreslagenAv.value = store.getLocal('dnb_name');
+  $('#suggFor').textContent = `${m.medium} ligger i dag i ${m.prio || '–'}.`;
+  $('#suggDlg').showModal();
+}
+
+// ---------- Händelser ----------
+
+$('#loginForm').addEventListener('submit', e => { e.preventDefault(); $('#loginErr').textContent = ''; login($('#pwInput').value); });
+$('#logoutBtn').onclick = () => logout('Du är utloggad.');
+$$('nav button').forEach(b => b.onclick = () => showView(b.dataset.view));
+$$('.reload').forEach(b => b.onclick = refresh);
+$$('.print').forEach(b => b.onclick = () => window.print());
+$$('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
+$('#showPast').onchange = renderEvents;
+$('#addEvent').onclick = () => openEvent(null);
+$('#addMedia').onclick = () => openMedia(null);
+$('#copyMenuA').onclick = () => copyLevels(['T1']);
+$('#copyMenuAB').onclick = () => copyLevels(['T1', 'T2']);
+
+$('#mFilters').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  mFilter = b.dataset.f;
+  $$('#mFilters button').forEach(x => x.classList.toggle('on', x === b));
+  renderMedia();
+});
+
+$('#eventList').addEventListener('click', e => {
+  const b = e.target.closest('[data-edit-event]');
+  if (b) openEvent(data.kalender.find(x => x.id === b.dataset.editEvent));
+});
+
+$('#mediaList').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset;
+  if (d.newArende) openArende(null, d.newArende);
+  else if (d.newKlipp) openKlipp(null, { medium: findMedia(d.newKlipp).medium });
+  else if (d.suggest) openSuggest(findMedia(d.suggest));
+  else if (d.editMedia) openMedia(findMedia(d.editMedia));
+  else if (d.copy) { const m = findMedia(d.copy); copyText(emailsOf(m).join(', '), `Adresser för ${m.medium} kopierade`); }
+  else if (d.accept) {
+    const m = findMedia(d.accept);
+    if (m.forslag === 'Ta bort') {
+      if (confirm(`Ta bort ${m.medium} ur medielistan?`)) run({ action: 'delete', table: 'medier', id: m.id }, 'Mediet borttaget');
+    } else {
+      run({ action: 'save', table: 'medier', item: Object.assign({}, m, { prio: m.forslag, forslag: '', forslagKommentar: '', foreslagenAv: '' }) }, `${m.medium} flyttat till ${m.forslag}`);
+    }
+  }
+  else if (d.reject) {
+    const m = findMedia(d.reject);
+    run({ action: 'save', table: 'medier', item: Object.assign({}, m, { forslag: '', forslagKommentar: '', foreslagenAv: '' }) }, 'Förslaget avvisat');
+  }
+});
+
+$('#eventForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const item = read(e.target, EVENT_FIELDS);
+  $('#eventDlg').close();
+  run({ action: 'save', table: 'kalender', item });
+});
+$('#eventDel').onclick = () => {
+  const id = $('#eventForm').elements.id.value;
+  if (id && confirm('Ta bort aktiviteten?')) { $('#eventDlg').close(); run({ action: 'delete', table: 'kalender', id }); }
+};
+
+$('#mediaForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const item = Object.assign({}, findMedia(f.elements.id.value) || {}, read(f, ['id','grupp','medium','format','fokus','prio']));
+  item.epost = f.elements.epost.value.split(/[\s,;]+/).map(s => s.trim()).filter(Boolean).join('\n');
+  $('#mediaDlg').close();
+  run({ action: 'save', table: 'medier', item });
+});
+$('#mediaDel').onclick = () => {
+  const id = $('#mediaForm').elements.id.value;
+  if (id && confirm('Ta bort mediet?')) { $('#mediaDlg').close(); run({ action: 'delete', table: 'medier', id }); }
+};
+
+$('#suggForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const m = findMedia(f.elements.id.value);
+  const name = f.elements.foreslagenAv.value.trim();
+  store.setLocal('dnb_name', name);
+  const item = Object.assign({}, m, {
+    forslag: f.querySelector('input[name="forslag"]:checked').value,
+    forslagKommentar: f.elements.forslagKommentar.value.trim(),
+    foreslagenAv: name
+  });
+  $('#suggDlg').close();
+  run({ action: 'save', table: 'medier', item }, 'Förslaget är sparat');
+});
+
+// ---------- Ärenden ----------
+
+const mediaName = id => { const m = findMedia(id); return m ? m.medium : (id || '–'); };
+const myName = () => store.getLocal('dnb_name');
+const isPubArende = a => !!(a.pubDatum || a.pubLank || a.status === 'Publicerad');
+
+function renderArenden() {
+  const today = todayIso();
+  const A = data.arenden;
+  const open = A.filter(a => !CLOSED.includes(a.status));
+  const late = open.filter(a => a.nastaDatum && a.nastaDatum < today);
+  const pubs = A.filter(isPubArende);
+  const touched = new Set(A.map(a => a.medium)).size;
+  $('#aStats').innerHTML = `
+    <div class="stat"><b>${open.length}</b><span>öppna ärenden</span></div>
+    <div class="stat ${late.length ? 'warn' : ''}"><b>${late.length}</b><span>försenade</span></div>
+    <div class="stat"><b>${pubs.length}</b><span>publiceringar</span></div>
+    <div class="stat"><b>${touched}/${data.medier.length}</b><span>medier bearbetade</span></div>`;
+
+  const q = ($('#aSearch').value || '').trim().toLowerCase();
+  const me = myName().toLowerCase();
+  let list = A.filter(a => {
+    if (aFilter === 'oppna' && CLOSED.includes(a.status)) return false;
+    if (aFilter === 'publ' && !isPubArende(a)) return false;
+    if (aFilter === 'mina' && (!me || String(a.ansvarig).toLowerCase() !== me)) return false;
+    if (q && ![mediaName(a.medium), a.amne, a.ansvarig, a.kommentar, a.pubRubrik].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const key = a => aFilter === 'oppna' ? (a.nastaDatum || '9999') + a.datum : a.datum;
+  list.sort((x, y) => aFilter === 'oppna' ? key(x).localeCompare(key(y)) : key(y).localeCompare(key(x)));
+
+  if (aFilter === 'mina' && !me) { $('#arendeList').innerHTML = '<div class="empty">Ange ditt namn i ett ärende först, så vet sidan vem du är.</div>'; return; }
+  const statuses = ['Att göra','Kontaktad','Intresse','Publicerad','Nej tack','Avslutad'];
+  $('#arendeList').innerHTML = list.length ? '<div class="tasks">' + list.map(a => {
+    const closed = CLOSED.includes(a.status);
+    const isLate = !closed && a.nastaDatum && a.nastaDatum < today;
+    const isPub = isPubArende(a);
+    return `<article class="task ${closed ? 'done' : ''} ${isLate ? 'overdue' : ''} ${isPub ? 'published' : ''}">
+      <button class="tick ${closed ? 'on' : ''}" data-tick="${esc(a.id)}" title="${closed ? 'Öppna igen' : 'Bocka av som avslutad'}">${closed ? '✓' : ''}</button>
+      <div>
+        <h4><span class="med">${esc(mediaName(a.medium))}</span> – ${esc(a.amne)}</h4>
+        <div class="line">${esc(a.datum)} · ${esc(a.kanal)} · ${esc(a.ansvarig)}</div>
+        ${!closed && (a.nastaSteg || a.nastaDatum) ? `<div class="next ${isLate ? 'late' : ''}">→ ${esc(a.nastaSteg || 'Följ upp')}${a.nastaDatum ? ' senast ' + esc(a.nastaDatum) : ''}</div>` : ''}
+        ${a.kommentar ? `<div class="note">${esc(a.kommentar)}</div>` : ''}
+        ${isPub && (a.pubRubrik || a.pubLank || a.pubDatum) ? `<div class="pub">📰 ${a.pubDatum ? esc(a.pubDatum) + ' · ' : ''}${a.pubTyp ? esc(a.pubTyp) + ' · ' : ''}${isUrl(a.pubLank) ? `<a href="${esc(a.pubLank)}" target="_blank" rel="noopener">${esc(a.pubRubrik || a.pubLank)}</a>` : esc(a.pubRubrik)}</div>` : ''}
+      </div>
+      <div class="side">
+        <select class="st" data-status="${esc(a.id)}">${statuses.map(s => `<option ${s === a.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+        <button class="link" data-edit-arende="${esc(a.id)}">Redigera</button>
+      </div>
+    </article>`;
+  }).join('') + '</div>' : '<div class="empty">Inga ärenden att visa.</div>';
+}
+
+function buildMediaPicker(selected) {
+  const groups = [];
+  data.medier.forEach(m => { const g = m.grupp || 'Övriga'; if (!groups.includes(g)) groups.push(g); });
+  const sorted = data.medier.slice().sort((a, b) => letterOf(a.prio).localeCompare(letterOf(b.prio)) || String(a.medium).localeCompare(String(b.medium), 'sv'));
+  $('#mpick').innerHTML = groups.map(g => `<div class="g">${esc(g)}</div>` + sorted.filter(m => (m.grupp || 'Övriga') === g).map(m =>
+    `<label><input type="checkbox" value="${esc(m.id)}" ${selected.includes(m.id) ? 'checked' : ''}> <span class="prio ${letterOf(m.prio)}" style="min-width:22px;height:22px;font-size:12px">${letterOf(m.prio) === 'X' ? '?' : letterOf(m.prio)}</span> ${esc(m.medium)}</label>`).join('')).join('')
+    || '<div class="note">Lägg först till medier under fliken Medier.</div>';
+  $('#mOne').innerHTML = sorted.map(m => `<option value="${esc(m.id)}">${esc(m.medium)}</option>`).join('');
+}
+
+const allAmnen = () => Array.from(new Set(
+  data.arenden.map(x => x.amne)
+    .concat(data.klipp.map(k => k.amne))
+    .concat(data.kalender.map(k => String(k.aktivitet).split(/[:.?\n]/)[0].trim()))
+    .filter(Boolean)));
+
+function openArende(a, mediumId) {
+  const f = $('#arendeForm');
+  f.reset();
+  buildMediaPicker(mediumId ? [mediumId] : []);
+  $('#amneList').innerHTML = allAmnen().map(s => `<option value="${esc(s)}">`).join('');
+  if (a) {
+    ARENDE_FIELDS.forEach(k => { if (f.elements[k]) f.elements[k].value = a[k] || ''; });
+  } else {
+    f.elements.datum.value = todayIso();
+    f.elements.ansvarig.value = myName();
+    f.elements.status.value = 'Kontaktad';
+    f.elements.kanal.value = 'Mejl';
+  }
+  $('#mpickField').hidden = !!a;
+  $('#mOneField').hidden = !a;
+  $('#arendeTitle').textContent = a ? 'Redigera ärende' : 'Nytt ärende';
+  $('#arendeDel').hidden = !a;
+  $('#arendeDlg').showModal();
+}
+
+$('#addArende').onclick = () => openArende(null);
+$('#aSearch').addEventListener('input', renderArenden);
+$('#aFilters').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  aFilter = b.dataset.f;
+  $$('#aFilters button').forEach(x => x.classList.toggle('on', x === b));
+  renderArenden();
+});
+
+$('#arendeList').addEventListener('click', e => {
+  const t = e.target.closest('[data-tick]');
+  const ed = e.target.closest('[data-edit-arende]');
+  if (t) {
+    const a = data.arenden.find(x => x.id === t.dataset.tick);
+    const closed = CLOSED.includes(a.status);
+    run({ action: 'save', table: 'arenden', item: Object.assign({}, a, { status: closed ? 'Kontaktad' : 'Avslutad' }) }, closed ? 'Ärendet öppnat igen' : 'Avbockat');
+  } else if (ed) openArende(data.arenden.find(x => x.id === ed.dataset.editArende));
+});
+$('#arendeList').addEventListener('change', e => {
+  const s = e.target.closest('[data-status]'); if (!s) return;
+  const a = data.arenden.find(x => x.id === s.dataset.status);
+  const item = Object.assign({}, a, { status: s.value });
+  if (s.value === 'Publicerad' && !item.pubDatum) item.pubDatum = todayIso();
+  run({ action: 'save', table: 'arenden', item }, 'Status: ' + s.value);
+});
+
+$('#arendeForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const base = {};
+  ARENDE_FIELDS.forEach(k => { if (f.elements[k]) base[k] = String(f.elements[k].value || '').trim(); });
+  base.pubLank = fixUrl(base.pubLank);
+  if ((base.pubLank || base.pubRubrik) && !base.pubDatum) base.pubDatum = base.datum;
+  store.setLocal('dnb_name', base.ansvarig);
+  if (base.id) {
+    $('#arendeDlg').close();
+    return run({ action: 'save', table: 'arenden', item: base }, 'Ärendet sparat');
+  }
+  const ids = $$('#mpick input:checked').map(i => i.value);
+  if (!ids.length) { alert('Välj minst ett medium.'); return; }
+  $('#arendeDlg').close();
+  run({ action: 'saveMany', table: 'arenden', items: ids.map(id => Object.assign({}, base, { id: '', medium: id })) },
+      ids.length > 1 ? `${ids.length} ärenden skapade` : 'Ärendet skapat');
+});
+$('#arendeDel').onclick = () => {
+  const id = $('#arendeForm').elements.id.value;
+  if (id && confirm('Ta bort ärendet?')) { $('#arendeDlg').close(); run({ action: 'delete', table: 'arenden', id }); }
+};
+
+// ---------- Klipp ----------
+
+const fmtDate = (iso, lang) => {
+  if (!isoOf(iso)) return iso || '';
+  const [y, m, d] = isoOf(iso).split('-').map(Number);
+  return lang === 'en' ? `${d} ${MONTHS_EN[m - 1]} ${y}` : `${d} ${MONTHS[m - 1]} ${y}`;
+};
+const shortDate = (iso, lang) => {
+  if (!isoOf(iso)) return '';
+  const [, m, d] = isoOf(iso).split('-').map(Number);
+  return lang === 'en' ? `${d} ${MONTHS_EN[m - 1].slice(0, 3)}` : `${d} ${MONTHS[m - 1].slice(0, 3)}`;
+};
+// 20–23 oktober 2026 · 30 september – 23 oktober 2026 · 30 december 2026 – 4 januari 2027
+function fmtRange(a, b, L) {
+  if (a === b) return fmtDate(a, L);
+  const [ya, ma, da] = a.split('-').map(Number), [yb, mb, db] = b.split('-').map(Number);
+  const M = L === 'en' ? MONTHS_EN : MONTHS;
+  if (ya === yb && ma === mb) return `${da}–${db} ${M[mb - 1]} ${yb}`;
+  if (ya === yb) return `${da} ${M[ma - 1]} – ${db} ${M[mb - 1]} ${yb}`;
+  return `${fmtDate(a, L)} – ${fmtDate(b, L)}`;
+}
+const TYP_EN = { 'Nyhet': 'News', 'Intervju': 'Interview', 'Krönika/debatt': 'Opinion', 'Omnämnande': 'Mention', 'Poddavsnitt': 'Podcast', 'TV/radio': 'TV/radio', 'Annat': 'Other' };
+
+// Klipp som syns med nuvarande filter, nyast först
+function filteredKlipp() {
+  const from = $('#kFrom').value, to = $('#kTo').value, amne = $('#kAmne').value;
+  const q = ($('#kSearch').value || '').trim().toLowerCase();
+  return data.klipp.filter(k => {
+    const d = isoOf(k.datum);
+    if (from && d && d < from) return false;
+    if (to && d && d > to) return false;
+    if (amne && k.amne !== amne) return false;
+    if (q && ![k.medium, k.rubrik, k.amne, k.talesperson, k.kommentar].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
+}
+const selectedKlipp = () => filteredKlipp().filter(k => !kUnchecked.has(k.id));
+
+// Publicerade ärenden som ännu inte finns som klipp
+function missingFromArenden() {
+  const links = new Set(data.klipp.map(k => k.lank).filter(Boolean));
+  const ids = new Set(data.klipp.map(k => k.arende).filter(Boolean));
+  return data.arenden.filter(a => isPubArende(a) && (a.pubLank || a.pubRubrik) && !ids.has(a.id) && !(a.pubLank && links.has(a.pubLank)));
+}
+
+function renderKlipp() {
+  // Utspelsfilter
+  const sel = $('#kAmne'), cur = sel.value;
+  const amnen = Array.from(new Set(data.klipp.map(k => k.amne).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'sv'));
+  sel.innerHTML = '<option value="">Alla utspel</option>' + amnen.map(a => `<option ${a === cur ? 'selected' : ''}>${esc(a)}</option>`).join('');
+
+  const list = filteredKlipp();
+  const chosen = list.filter(k => !kUnchecked.has(k.id));
+  const nMedia = new Set(chosen.map(k => k.medium)).size;
+  const nTal = new Set(chosen.map(k => k.talesperson).filter(Boolean)).size;
+  $('#kStats').innerHTML = `
+    <div class="stat"><b>${data.klipp.length}</b><span>klipp totalt</span></div>
+    <div class="stat"><b>${chosen.length}</b><span>valda för mejlet</span></div>
+    <div class="stat"><b>${nMedia}</b><span>medier i urvalet</span></div>
+    <div class="stat"><b>${nTal}</b><span>talespersoner i urvalet</span></div>`;
+
+  const miss = missingFromArenden();
+  $('#kImport').innerHTML = miss.length ? `<div class="notice">📰 ${miss.length} publicering${miss.length > 1 ? 'ar' : ''} under Ärenden finns inte bland klippen ännu.
+    <span class="spacer"></span><button class="small primary" id="kImportBtn">Lägg till som klipp</button></div>` : '';
+
+  $('#kSel').textContent = list.length ? `${chosen.length} av ${list.length} valda` : '';
+
+  let html = '', lastMonth = '';
+  list.forEach(k => {
+    const d = isoOf(k.datum);
+    const month = d ? MONTHS[+d.slice(5, 7) - 1] + ' ' + d.slice(0, 4) : 'Utan datum';
+    if (month !== lastMonth) { html += `<div class="kgroup">${month}</div>`; lastMonth = month; }
+    const on = !kUnchecked.has(k.id);
+    html += `<article class="klipp ${on ? '' : 'off'}">
+      <input type="checkbox" data-kcheck="${esc(k.id)}" ${on ? 'checked' : ''} title="Ta med i mejlet">
+      <div>
+        <div class="kline"><span class="kmed">${esc(k.medium)}</span><span>${esc(k.datum)}</span>${k.typ ? `<span class="chip">${esc(k.typ)}</span>` : ''}</div>
+        <div class="krub">${isUrl(k.lank) ? `<a href="${esc(k.lank)}" target="_blank" rel="noopener">${esc(k.rubrik)}</a>` : esc(k.rubrik)}</div>
+        <div class="kline">${k.amne ? `<span>Utspel: ${esc(k.amne)}</span>` : ''}${k.talesperson ? `<span>Talesperson: ${esc(k.talesperson)}</span>` : ''}${k.rackvidd ? `<span>Räckvidd: ${esc(k.rackvidd)}</span>` : ''}${!isUrl(k.lank) ? '<span style="color:var(--danger)">Länk saknas</span>' : ''}</div>
+        ${k.kommentar ? `<div class="note">${esc(k.kommentar)}</div>` : ''}
+      </div>
+      <button class="link kedit" data-edit-klipp="${esc(k.id)}">Redigera</button>
+    </article>`;
+  });
+  $('#klippList').innerHTML = html || `<div class="empty">${data.klipp.length ? 'Inga klipp matchar filtret.' : 'Inga klipp ännu. Lägg till det första med “+ Nytt klipp”.'}</div>`;
+  renderDraft();
+}
+
+function openKlipp(k, preset) {
+  const f = $('#klippForm');
+  f.reset();
+  $('#kMediaList').innerHTML = data.medier.map(m => `<option value="${esc(m.medium)}">`).join('');
+  $('#amneList2').innerHTML = allAmnen().map(s => `<option value="${esc(s)}">`).join('');
+  $('#talList').innerHTML = Array.from(new Set(data.klipp.map(x => x.talesperson).filter(Boolean))).map(s => `<option value="${esc(s)}">`).join('');
+  const src = k || Object.assign({ datum: todayIso(), amne: $('#kAmne').value }, preset || {});
+  KLIPP_FIELDS.forEach(key => { if (f.elements[key]) f.elements[key].value = src[key] || ''; });
+  $('#klippTitle').textContent = k ? 'Redigera klipp' : 'Nytt klipp';
+  $('#klippDel').hidden = !k;
+  $('#klippDlg').showModal();
+}
+
+$('#addKlipp').onclick = () => openKlipp(null);
+['#kFrom','#kTo','#kAmne'].forEach(s => $(s).addEventListener('change', renderKlipp));
+$('#kSearch').addEventListener('input', renderKlipp);
+$('#kAll').onclick = () => { filteredKlipp().forEach(k => kUnchecked.delete(k.id)); renderKlipp(); };
+$('#kNone').onclick = () => { filteredKlipp().forEach(k => kUnchecked.add(k.id)); renderKlipp(); };
+
+$('#klippList').addEventListener('change', e => {
+  const c = e.target.closest('[data-kcheck]'); if (!c) return;
+  c.checked ? kUnchecked.delete(c.dataset.kcheck) : kUnchecked.add(c.dataset.kcheck);
+  renderKlipp();
+});
+$('#klippList').addEventListener('click', e => {
+  const ed = e.target.closest('[data-edit-klipp]');
+  if (ed) openKlipp(data.klipp.find(x => x.id === ed.dataset.editKlipp));
+});
+$('#kImport').addEventListener('click', e => {
+  if (!e.target.closest('#kImportBtn')) return;
+  const items = missingFromArenden().map(a => ({
+    id: '', datum: a.pubDatum || a.datum, medium: mediaName(a.medium), rubrik: a.pubRubrik || a.pubLank,
+    lank: a.pubLank, typ: a.pubTyp, amne: a.amne, talesperson: '', rackvidd: '', kommentar: '', arende: a.id
+  }));
+  run({ action: 'saveMany', table: 'klipp', items }, `${items.length} klipp tillagda`);
+});
+
+$('#klippForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const item = read(e.target, KLIPP_FIELDS);
+  item.lank = fixUrl(item.lank);
+  $('#klippDlg').close();
+  run({ action: 'save', table: 'klipp', item }, item.id ? 'Klippet sparat' : 'Klippet tillagt');
+});
+$('#klippDel').onclick = () => {
+  const id = $('#klippForm').elements.id.value;
+  if (id && confirm('Ta bort klippet?')) { $('#klippDlg').close(); run({ action: 'delete', table: 'klipp', id }); }
+};
+
+// ---------- Mejlutkast ----------
+
+const TEXTS = {
+  sv: {
+    hej: n => n ? `Hej ${n},` : 'Hej,',
+    intro: 'Här kommer en sammanställning av publiceringarna vi fått {period}. Totalt blev det {antal} i {medier}.',
+    outro: 'Hör gärna av dig om du vill veta mer om något av klippen.',
+    regards: 'Vänliga hälsningar',
+    subject: (n, p) => `Mediebevakning ${p}: ${n}`,
+    clips: n => n === 1 ? '1 klipp' : `${n} klipp`,
+    medier: n => n === 1 ? '1 medium' : `${n} medier`,
+    period: (r, single) => !r ? '' : single ? `den ${r}` : `under perioden ${r}`,
+    tal: 'talesperson', noAmne: 'Övrigt', noLink: 'länk saknas'
+  },
+  en: {
+    hej: n => n ? `Hi ${n},` : 'Hi,',
+    intro: 'Here is a summary of the media coverage we received {period}: {antal} across {medier}.',
+    outro: 'Let me know if you would like more details on any of the articles.',
+    regards: 'Best regards',
+    subject: (n, p) => `Media coverage ${p}: ${n}`,
+    clips: n => n === 1 ? '1 clip' : `${n} clips`,
+    medier: n => n === 1 ? '1 outlet' : `${n} outlets`,
+    period: (r, single) => !r ? '' : single ? `on ${r}` : `during ${r}`,
+    tal: 'spokesperson', noAmne: 'Other', noLink: 'no link'
+  }
+};
+
+const lang = () => $('#dLang').value;
+
+function loadDraftPrefs() {
+  const L = store.getLocal('dnb_dlang') || 'sv';
+  $('#dLang').value = L;
+  $('#dGroup').value = store.getLocal('dnb_dgroup') || 'amne';
+  $('#dFrom').value = store.getLocal('dnb_dfrom') || store.getLocal('dnb_name');
+  $('#dTo').value = store.getLocal('dnb_dto');
+  $('#dIntro').value = store.getLocal('dnb_dintro_' + L) || TEXTS[L].intro;
+  $('#dOutro').value = store.getLocal('dnb_doutro_' + L) || TEXTS[L].outro;
+}
+
+// Bygger mejlet som struktur; används för förhandsvisning, HTML och ren text
+function buildDraft() {
+  const L = lang(), T = TEXTS[L];
+  const list = selectedKlipp().slice().sort((a, b) => String(a.datum).localeCompare(String(b.datum)));
+  const dates = list.map(k => isoOf(k.datum)).filter(Boolean).sort();
+  const range = dates.length ? fmtRange(dates[0], dates[dates.length - 1], L) : '';
+  const single = dates.length > 0 && dates[0] === dates[dates.length - 1];
+  const nMedia = new Set(list.map(k => k.medium)).size;
+  const fillTokens = s => s.replace(/\{antal\}/g, T.clips(list.length)).replace(/\{medier\}/g, T.medier(nMedia))
+    .replace(/\{period\}/g, T.period(range, single)).replace(/\s+([.,:])/g, '$1').replace(/ {2,}/g, ' ').trim();
+
+  const by = $('#dGroup').value;
+  const groups = [];
+  if (by === 'datum') groups.push({ title: '', items: list });
+  else {
+    const keyOf = k => by === 'medium' ? (k.medium || T.noAmne) : (k.amne || T.noAmne);
+    list.forEach(k => {
+      let g = groups.find(x => x.title === keyOf(k));
+      if (!g) groups.push(g = { title: keyOf(k), items: [] });
+      g.items.push(k);
+    });
+    if (by === 'medium') groups.sort((x, y) => x.title.localeCompare(y.title, 'sv'));
+  }
+
+  const showTyp = $('#dShowTyp').checked, showTal = $('#dShowTal').checked, showKom = $('#dShowKom').checked;
+  const metaOf = k => {
+    const parts = [];
+    if (by !== 'medium') parts.push(k.medium);
+    parts.push(shortDate(k.datum, L));
+    if (showTyp && k.typ) parts.push((L === 'en' ? (TYP_EN[k.typ] || k.typ) : k.typ).toLowerCase());
+    if (showTal && k.talesperson) parts.push(`${T.tal} ${k.talesperson}`);
+    return parts.filter(Boolean).join(', ');
+  };
+
+  return {
+    subject: T.subject(T.clips(list.length), range).replace(/ :/, ':').replace(/\s+/g, ' '),
+    greeting: T.hej($('#dTo').value.trim()),
+    intro: fillTokens($('#dIntro').value),
+    outro: fillTokens($('#dOutro').value),
+    signoff: T.regards, sender: $('#dFrom').value.trim(),
+    groups: groups.map(g => ({ title: g.title, items: g.items.map(k => ({
+      rubrik: k.rubrik, lank: isUrl(k.lank) ? k.lank : '', meta: metaOf(k), kommentar: showKom ? k.kommentar : ''
+    })) })),
+    count: list.length, noLink: T.noLink
+  };
+}
+
+function draftHtml(D, forPreview) {
+  const p = s => s ? `<p>${esc(s)}</p>` : '';
+  const style = forPreview ? '' : ' style="font-family:Arial,Helvetica,sans-serif;font-size:14px"';
+  let h = `<div${style}>${p(D.greeting)}${p(D.intro)}`;
+  D.groups.forEach(g => {
+    if (g.title) h += `<h4${forPreview ? '' : ' style="margin:14px 0 4px;font-size:14px"'}>${esc(g.title)}</h4>`;
+    h += '<ul>' + g.items.map(it => `<li>${it.lank ? `<a href="${esc(it.lank)}">${esc(it.rubrik)}</a>` : `${esc(it.rubrik)} (${esc(D.noLink)})`}${it.meta ? ` <span class="c"${forPreview ? '' : ' style="color:#5f6b7a"'}>– ${esc(it.meta)}</span>` : ''}${it.kommentar ? `<br><span class="c"${forPreview ? '' : ' style="color:#5f6b7a"'}>${esc(it.kommentar)}</span>` : ''}</li>`).join('') + '</ul>';
+  });
+  h += `${p(D.outro)}<p>${esc(D.signoff)}${D.sender ? '<br>' + esc(D.sender) : ''}</p></div>`;
+  return h;
+}
+
+function draftText(D) {
+  const out = [D.greeting, '', D.intro, ''];
+  D.groups.forEach(g => {
+    if (g.title) out.push(g.title.toUpperCase());
+    g.items.forEach(it => {
+      out.push(`• ${it.rubrik}${it.meta ? ' – ' + it.meta : ''}`);
+      if (it.lank) out.push(`  ${it.lank}`);
+      if (it.kommentar) out.push(`  ${it.kommentar}`);
+    });
+    out.push('');
+  });
+  if (D.outro) out.push(D.outro, '');
+  out.push(D.signoff);
+  if (D.sender) out.push(D.sender);
+  return out.join('\n');
+}
+
+function renderDraft() {
+  const D = buildDraft();
+  $('#dPreview').innerHTML = D.count
+    ? `<div class="subj">${esc(D.subject)}</div>${draftHtml(D, true)}`
+    : '<div class="note">Markera klipp i listan så byggs mejlet här.</div>';
+}
+
+$('#dLang').addEventListener('change', () => {
+  const L = lang();
+  store.setLocal('dnb_dlang', L);
+  $('#dIntro').value = store.getLocal('dnb_dintro_' + L) || TEXTS[L].intro;
+  $('#dOutro').value = store.getLocal('dnb_doutro_' + L) || TEXTS[L].outro;
+  renderDraft();
+});
+$('#dGroup').addEventListener('change', () => { store.setLocal('dnb_dgroup', $('#dGroup').value); renderDraft(); });
+$('#dTo').addEventListener('input', () => { store.setLocal('dnb_dto', $('#dTo').value); renderDraft(); });
+$('#dFrom').addEventListener('input', () => { store.setLocal('dnb_dfrom', $('#dFrom').value); renderDraft(); });
+$('#dIntro').addEventListener('input', () => { store.setLocal('dnb_dintro_' + lang(), $('#dIntro').value); renderDraft(); });
+$('#dOutro').addEventListener('input', () => { store.setLocal('dnb_doutro_' + lang(), $('#dOutro').value); renderDraft(); });
+['#dShowTyp','#dShowTal','#dShowKom'].forEach(s => $(s).addEventListener('change', renderDraft));
+$('#dReset').onclick = () => {
+  const L = lang();
+  store.setLocal('dnb_dintro_' + L, ''); store.setLocal('dnb_doutro_' + L, '');
+  $('#dIntro').value = TEXTS[L].intro; $('#dOutro').value = TEXTS[L].outro;
+  renderDraft();
+};
+
+$('#dCopyRich').onclick = async () => {
+  const D = buildDraft();
+  if (!D.count) return toast('Markera minst ett klipp först');
+  const html = draftHtml(D, false), text = draftText(D);
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([text], { type: 'text/plain' })
+    })]);
+    toast('Mejlet kopierat – klistra in i ditt mejl. Ämnesraden kopieras separat.');
+  } catch (e) {
+    copyText(text, 'Mejlet kopierat som ren text');
+  }
+};
+$('#dCopyPlain').onclick = () => {
+  const D = buildDraft();
+  if (!D.count) return toast('Markera minst ett klipp först');
+  copyText(`${D.subject}\n\n${draftText(D)}`, 'Ämne och text kopierade');
+};
+$('#dMailto').onclick = () => {
+  const D = buildDraft();
+  if (!D.count) return toast('Markera minst ett klipp först');
+  const url = `mailto:?subject=${encodeURIComponent(D.subject)}&body=${encodeURIComponent(draftText(D))}`;
+  if (url.length > 1900) {
+    copyText(draftText(D), 'Mejlet är för långt för att öppnas direkt – texten är kopierad, klistra in den');
+    location.href = `mailto:?subject=${encodeURIComponent(D.subject)}`;
+  } else location.href = url;
+};
+
+// Logga in automatiskt om lösenordet redan angetts i den här fliken
+loadDraftPrefs();
+const saved = store.get('dnb_pw');
+if (saved && SCRIPT_URL) login(saved, true);
+else $('#pwInput').focus();
+</script>
+</body>
+</html>
