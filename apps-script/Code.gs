@@ -1,6 +1,6 @@
 /**
  * Dun & Bradstreet – PR-planering
- * Backend för index.html. Ligger bundet till kalkylarket "DUN – PR-planering".
+ * Backend för index.html. Läser och skriver i kalkylarket "DUN – PR-planering" (SHEET_ID nedan).
  *
  * Varje flik i kalkylarket är en tabell. Rad 1 är rubriker (fältnamnen nedan).
  * Sidan skickar POST med { action, table, item/items/id, password } och får
@@ -8,6 +8,9 @@
  *
  * Lösenordet sätts under Projektinställningar → Skriptegenskaper → PASSWORD.
  */
+
+const SHEET_ID = '1KJQaSfRU5DJ9jMU6A63zaP8kkfu6T5nVqsIzis4bLj0';
+const ss_ = () => SpreadsheetApp.openById(SHEET_ID);
 
 const TABLES = {
   kalender: ['id', 'forberedelse', 'publicering', 'aktivitet', 'vinkel', 'status', 'ansvarig', 'kommentar'],
@@ -62,7 +65,7 @@ function doPost(e) {
 // ---------- Tabeller ----------
 
 function sheet_(name) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   let sh = ss.getSheetByName(name);
   const fields = TABLES[name];
   if (!sh) {
@@ -161,10 +164,18 @@ function json_(obj) {
  * aktivitet i kalendern. Medielistan lämnas tom.
  */
 function setup() {
+  const ss = ss_();
+  // Har kalkylarket skapats från medier.csv heter fliken något annat – döp om den till "medier"
+  if (!ss.getSheetByName('medier')) {
+    const withMedia = ss.getSheets().find(sh => sh.getLastColumn() > 2 &&
+      sh.getRange(1, 1, 1, 3).getValues()[0].join(',') === 'id,grupp,medium');
+    if (withMedia) withMedia.setName('medier');
+  }
   Object.keys(TABLES).forEach(sheet_);
-  const sheet1 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Blad1') ||
-                 SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1');
-  if (sheet1 && sheet1.getLastRow() === 0) SpreadsheetApp.getActiveSpreadsheet().deleteSheet(sheet1);
+  ['Blad1', 'Sheet1'].forEach(n => {
+    const sh = ss.getSheetByName(n);
+    if (sh && sh.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(sh);
+  });
 
   if (readTable_('kalender').length === 0) {
     saveItem_('kalender', {
